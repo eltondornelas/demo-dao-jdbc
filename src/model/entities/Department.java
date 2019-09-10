@@ -5,6 +5,8 @@ import java.io.Serializable;
 public class Department implements Serializable {
 
 	//Implement Serializable -> É para que os objetos sejam transformados em sequência de bytes, na linguagem java tem que fazer o implement Serializable se quiser que o objeto seja gravado em arquivo, trafegado em rede...
+	//esse item é gerado automaticamente no vídeo, aqui foi manual.
+	private static final long serialVersionUID = 1L;
 	
 	private Integer id;
 	private String name;
