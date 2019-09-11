@@ -58,16 +58,12 @@ public class SellerDaoJDBC implements SellerDao {
 			//Vamos criar o objeto Seller e associar ele com o Departamento.
 			
 			if (rs.next()) {
-				Department dep = new Department();
-				dep.setId(rs.getInt("DepartmentId")); //é o nome da coluna!
-				dep.setName(rs.getString("DepName")); //abre o banco de dados ou o pdf para ver os nomes das colunas
-				Seller obj = new Seller();
-				obj.setId(rs.getInt("Id"));
-				obj.setName(rs.getString("Name"));
-				obj.setEmail(rs.getString("Email"));
-				obj.setBaseSalary(rs.getDouble("BaseSalary"));
-				obj.setBirthDate(rs.getDate("BirthDate"));
-				obj.setDepartment(dep);
+				//instanciar departamento
+				Department dep = instantiateDepartment(rs);
+				
+				//instanciar o vendedor
+				Seller obj = instantiateSeller(rs, dep);
+				
 				return obj;
 			}
 			
@@ -80,6 +76,28 @@ public class SellerDaoJDBC implements SellerDao {
 			DB.closeStatement(st);
 			DB.closeResultSet(rs);			
 		}
+	}
+
+	private Seller instantiateSeller(ResultSet rs, Department dep) throws SQLException {  //propagar a exceção
+		Seller obj = new Seller();
+		
+		obj.setId(rs.getInt("Id"));
+		obj.setName(rs.getString("Name"));
+		obj.setEmail(rs.getString("Email"));
+		obj.setBaseSalary(rs.getDouble("BaseSalary"));
+		obj.setBirthDate(rs.getDate("BirthDate"));
+		obj.setDepartment(dep);
+		
+		return obj;
+	}
+
+	private Department instantiateDepartment(ResultSet rs) throws SQLException { //não há necessidade de colocar dentro de um try/catch já que a função que a chama possui, então ele propaga a exceção com o throws na chamada do método		
+		Department dep = new Department();
+		
+		dep.setId(rs.getInt("DepartmentId")); //é o nome da coluna!
+		dep.setName(rs.getString("DepName")); //abre o banco de dados ou o pdf para ver os nomes das colunas
+		
+		return dep;
 	}
 
 	@Override
